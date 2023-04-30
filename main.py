@@ -88,13 +88,12 @@ def run_quiz(my_dict, my_user_scores):
         value_words = my_dict.get(word)
         result = count_score(value_words, guess_word)
 
-        if all([list_word in guess_word for list_word in value_words]):  # проверка, входят ли все введенные слова пользователем в список
+        if set(value_words).issubset(set(guess_word)):  # проверка входит ли множество (set) нужный слов во множество (set) введенное от пользователя
             print('''================ \nALL CORRECT''')
             print(f'Your score: {result}')
 
         elif any([list_word in guess_word for list_word in value_words]):  # проверка, входит ли хотя бы одно слово введенное пользователем в список
             copy_list = value_words.copy()
-            # score = count_score(value_words, guess_word)
 
             for value in guess_word:
                 if value in my_dict.get(word):
