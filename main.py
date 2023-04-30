@@ -97,7 +97,10 @@ def run_quiz(my_dict, my_user_scores):
             # score = count_score(value_words, guess_word)
 
             for value in guess_word:
-                copy_list.remove(value)
+                if value in my_dict.get(word):
+                    copy_list.remove(value)
+                else:
+                    continue
             print('\n==========================')
             print(f'Your score: {result}')
             print('You forget this words:')
