@@ -5,7 +5,6 @@ import random
 
 words_dict = 'words1.json'
 user_scores = 'user_scorers.json'
-SCORE = 0
 
 
 def main():
@@ -34,7 +33,7 @@ def show_menu():
     1. Add new word
     2. Edit word
     3. Word quiz
-    4. Call dict
+    4. How much words in dictynory
     5. Exit \n''')
 
     try:
@@ -72,6 +71,7 @@ def edit_word(my_dict):
 
 
 def run_quiz(my_dict, my_user_scores):
+    score = 0
     user_name = input('What is your name? ')
     words_count = int(input('How much words you want guess '))
 
@@ -86,11 +86,12 @@ def run_quiz(my_dict, my_user_scores):
         print(f'{k}: {word}')
         guess_word = [v.strip() for v in input(f'{k}: Write word: ').split(',')]
         value_words = my_dict.get(word)
-        result = count_score(value_words, guess_word)
+        result = count_score(value_words, guess_word, score)
 
         if set(value_words).issubset(set(guess_word)):  # проверка входит ли множество (set) нужный слов во множество (set) введенное от пользователя
             print('''================ \nALL CORRECT''')
             print(f'Your score: {result}')
+            print('========================== \n')
 
         elif any([list_word in guess_word for list_word in value_words]):  # проверка, входит ли хотя бы одно слово введенное пользователем в список
             copy_list = value_words.copy()
@@ -110,6 +111,7 @@ def run_quiz(my_dict, my_user_scores):
             print('\n==========================')
             print('No, you dont guesed no one words:')
             print(*my_dict.get(word), end='\n')
+            print(f'Your score: {result}')
             print('========================== \n')
 
         save_score(user_name, result, my_user_scores)
@@ -119,17 +121,14 @@ def run_quiz(my_dict, my_user_scores):
 
 def call_dict(my_dict):
     call = my_dict
-    print(len(call))
+    print(f'In dictinory have {len(call)} words')
 
 
-def count_score(get_word, guess_word):
-    global SCORE
-    for score_count in guess_word:
-        if score_count in get_word:
-            SCORE += 1
-        else:
-            continue
-    return SCORE
+def count_score(get_word, guess_word, current_score):
+    for user_word in guess_word:
+        if user_word in get_word:
+            current_score += 1
+    return current_score
 
 
 def save_score(name, score, my_user_scores):
